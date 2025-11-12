@@ -8,3 +8,4 @@ pytest-env
 pytest-mock
 mysql-connector-python
 strawberry-graphql[fastapi]
+strawberry-graphql[cli]

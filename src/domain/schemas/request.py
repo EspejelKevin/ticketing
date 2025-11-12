@@ -5,8 +5,6 @@ from typing import Self
 from datetime import datetime
 
 
-# SCHEMAS FOR REST API
-
 class EventInput(BaseModel):
     name: str = Field(min_length=5, max_length=50)
     start_date: datetime
@@ -39,17 +37,6 @@ class EventUpdateInput(BaseModel):
         return self
     
 
-class EventDetails(BaseModel):
-    name: str
-    start_date: datetime
-    end_date: datetime
-    total_tickets_sold: int
-    total_tickets_available: int
-    total_tickets_exchange: int
-
-
-# SCHEMAS FOR GRAPHQL
-
 @strawberry.experimental.pydantic.input(model=EventInput, all_fields=True)
 class EventInputType:
     pass
@@ -57,9 +44,4 @@ class EventInputType:
 
 @strawberry.experimental.pydantic.input(model=EventUpdateInput, all_fields=True)
 class EventUpdateInputType:
-    pass
-
-
-@strawberry.experimental.pydantic.type(model=EventDetails, all_fields=True)
-class EventDetailsType:
     pass

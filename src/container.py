@@ -4,7 +4,7 @@ from contextlib import contextmanager
 from typing import Optional
 
 from infrastructure import MySQL, MySQLRepository
-from application import DBService, CreateEvent
+from application import DBService, CreateEvent, EventDetails
 from domain import Settings
 from log import Formatter, Log
 
@@ -27,6 +27,7 @@ class UseCasesContainer(containers.DeclarativeContainer):
     settings = providers.Dependency(Settings)
     log = providers.Dependency(Log)
     create_event = providers.Factory(CreateEvent, db_service=services.db_service, log=log)
+    event_details = providers.Factory(EventDetails, db_service=services.db_service, log=log)
 
 
 class AppContainer(containers.DeclarativeContainer):

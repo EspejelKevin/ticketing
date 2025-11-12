@@ -10,7 +10,10 @@ class MySQLRepository(DBRepository):
             session = mysql.get_session()
             cursor = session.cursor()
             cursor.execute(
-                'SELECT * FROM events WHERE id=%s',
+                '''SELECT name, start_date, end_date, 
+                          total_tickets, total_tickets_sold, 
+                          total_tickets_exchange 
+                   FROM events WHERE id=%s''',
                 (id,)
             )
             return cursor.fetchone()

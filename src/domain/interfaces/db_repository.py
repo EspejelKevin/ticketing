@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from ..schemas.event import EventInput, EventUpdateInput
+from ..schemas.request import EventInput, EventUpdateInput
 
 
 class DBRepository(metaclass=ABCMeta):

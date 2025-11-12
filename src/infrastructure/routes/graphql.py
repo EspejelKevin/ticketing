@@ -3,7 +3,11 @@ from strawberry.fastapi import GraphQLRouter
 
 import uuid
 
-from domain import get_settings, EventInputType, EventUpdateInputType, EventDetailsType
+from domain import (get_settings,
+                    EventInputType,
+                    EventUpdateInputType,
+                    EventDetailsType,
+                    DomainErrorExtension)
 import container
 
 
@@ -17,8 +21,11 @@ class Query:
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def create_event(self, event: EventInputType) -> EventDetailsType:
-        pass
+    def create_event(self, event: EventInputType) -> str:
+        with container.SingletonContainer.scope() as app:
+            use_case = app.use_cases.create_event()
+            data = use_case.execute(event)
+            return ''
 
     @strawberry.mutation
     def update_event(self, id: uuid.UUID, event: EventUpdateInputType) -> EventDetailsType:
@@ -32,5 +39,5 @@ class Mutation:
 settings = get_settings()
 prefix = f'/{settings.NAMESPACE}/api/{settings.API_VERSION}/{settings.RESOURCE}/graphql'
 
-schema = strawberry.Schema(query=Query, mutation=Mutation)
+schema = strawberry.Schema(query=Query, mutation=Mutation, extensions=[DomainErrorExtension])
 graphql_router = GraphQLRouter(schema, prefix=prefix)
