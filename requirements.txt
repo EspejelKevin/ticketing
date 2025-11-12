@@ -1,0 +1,10 @@
+fastapi[standard]
+uvicorn
+pydantic-settings
+pydantic
+dependency-injector
+pytest
+pytest-env
+pytest-mock
+mysql-connector-python
+strawberry-graphql[fastapi]
