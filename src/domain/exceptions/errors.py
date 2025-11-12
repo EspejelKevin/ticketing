@@ -9,6 +9,26 @@ class DomainException(Exception):
         super().__init__(message)
 
 
+class BadRequestError(DomainException):
+    def __init__(self, message: str, **kwargs: dict) -> None:
+        super().__init__(
+            message=message,
+            code='BAD_REQUEST_ERROR',
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+        self.kwargs = kwargs
+
+
+class ResourceConflictError(DomainException):
+    def __init__(self, message: str, **kwargs: dict) -> None:
+        super().__init__(
+            message=message,
+            code='RESOURCE_CONFLICT',
+            status_code=status.HTTP_409_CONFLICT
+        )
+        self.kwargs = kwargs
+
+
 class ResourceNotFoundError(DomainException):
     def __init__(self, resource: str, **kwargs: dict) -> None:
         super().__init__(

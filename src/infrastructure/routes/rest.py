@@ -50,10 +50,18 @@ def get_event_by_id(id: uuid.UUID) -> dict:
 @rest_router.patch('/events/{id}', tags=['Events'],
             summary=descriptions['update_event'])
 def update_event(id: uuid.UUID, event: EventUpdateInput) -> dict:
-    return {'status': 'success', 'event': event.model_dump()}
+    with container.SingletonContainer.scope() as app:
+        use_case = app.use_cases.update_event()
+        response = use_case.execute(str(id), event)
+        return JSONResponse(jsonable_encoder(response, exclude={'status_code'}),
+                            status_code=response.status_code)
 
 
 @rest_router.delete('/events/{id}', tags=['Events'],
             summary=descriptions['delete_event'])
 def delete_event(id: uuid.UUID) -> dict:
-    return {'id': str(id)}
+    with container.SingletonContainer.scope() as app:
+        use_case = app.use_cases.delete_event()
+        response = use_case.execute(str(id))
+        return JSONResponse(jsonable_encoder(response, exclude={'status_code'}),
+                            status_code=response.status_code)

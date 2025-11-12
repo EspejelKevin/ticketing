@@ -4,7 +4,9 @@ import uvicorn
 from infrastructure import rest_router, graphql_router
 from domain import (ResourceNotFoundError, resource_not_found_handler,
                     ResourceAlreadyExistsError, resource_already_exists_handler,
-                    InternalServerError, internal_server_handler)
+                    InternalServerError, internal_server_handler,
+                    BadRequestError, bad_request_handler,
+                    ResourceConflictError, resource_conflict_handler)
 import container
 
 
@@ -27,6 +29,8 @@ app = FastAPI(
     openapi_tags=tags,
     on_startup=[on_start_up]
 )
+app.add_exception_handler(BadRequestError, bad_request_handler)
+app.add_exception_handler(ResourceConflictError, resource_conflict_handler)
 app.add_exception_handler(ResourceNotFoundError, resource_not_found_handler)
 app.add_exception_handler(ResourceAlreadyExistsError, resource_already_exists_handler)
 app.add_exception_handler(InternalServerError, internal_server_handler)

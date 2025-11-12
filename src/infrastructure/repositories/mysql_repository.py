@@ -57,12 +57,12 @@ class MySQLRepository(DBRepository):
                 session = mysql.get_session()
                 cursor = session.cursor()
                 cursor.execute(
-                    'UPDATE events SET name=%s, start_date=%s, end_date=%s, total_tickets=%s) WHERE id=%s',
+                    'UPDATE events SET name=%s, start_date=%s, end_date=%s, total_tickets=%s WHERE id=%s',
                     (event.name, event.start_date, event.end_date, event.total_tickets, id)
                 )
                 return cursor.rowcount > 0
         except Exception:
-            return False
+            return None
     
     def delete_event_by_id(self, id: str):
         try:
