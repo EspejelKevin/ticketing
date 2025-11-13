@@ -17,9 +17,12 @@ class UpdateEvent:
         self.meta = {'transaction_id': self.transaction_id, 'timestamp': self.timestamp}
     
     def execute(self, _id: str, event: EventUpdateInput):
+        self.log.info('start logic update_event')
+
         event_db = self.db_service.get_event_by_id(_id)
 
         if not event_db:
+            self.log.info('resource not found in database', extra={'details': {'event_id': _id}})
             raise ResourceNotFoundError(resource=_id, meta=self.meta)
         
         event_db = list(event_db)
@@ -27,6 +30,8 @@ class UpdateEvent:
         new_end_date = event.end_date
 
         if new_end_date and new_end_date.date() < start_date_from_db.date():
+            self.log.info('conflict between new_end_date and start_date_from_db',
+                          extra={'details': {'new_end_date': new_end_date, 'start_date_from_db': start_date_from_db}})
             message = 'new end_date can not be less than start_date initial'
             raise BadRequestError(message=message, meta=self.meta)
 
@@ -36,6 +41,8 @@ class UpdateEvent:
         
         if new_total_tickets:
             if new_total_tickets < total_tickets_sold_from_db:
+                self.log.info('conflict between new_total_tickets and total_tickets_sold_from_db',
+                          extra={'details': {'new_total_tickets': new_total_tickets, 'total_tickets_sold_from_db': total_tickets_sold_from_db}})
                 message = 'total_tickets can not be less than total_tickets_sold'
                 details = f'max quantity allowed to decrease is: {total_tickets_from_db - total_tickets_sold_from_db}'
                 raise BadRequestError(message=message, meta=self.meta, details=details)
@@ -67,5 +74,7 @@ class UpdateEvent:
             'total_tickets_sold': total_tickets_sold_from_db,
             'total_tickets_exchange': event_db[5]
         }
+
+        self.log.info('update event with success')
 
         return Response(data=data, meta=self.meta, status_code=status.HTTP_200_OK)

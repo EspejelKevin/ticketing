@@ -18,9 +18,12 @@ class CreateEvent:
         self.meta = {'transaction_id': self.transaction_id, 'timestamp': self.timestamp}
     
     def execute(self, event: EventInput):
+        self.log.info('start logic create_event')
+
         event_db = self.db_service.get_event_by_name(event.name)
 
         if event_db:
+            self.log.info('resource already exists in database', extra={'details': {'event': event.name}})
             raise ResourceAlreadyExistsError(resource=event.name, meta=self.meta)
         
         _id = str(uuid.uuid4())
@@ -36,5 +39,7 @@ class CreateEvent:
             'start_date': event.start_date,
             'end_date': event.end_date
         }
+
+        self.log.info('event created with success')
 
         return Response(data=data, meta=self.meta, status_code=status.HTTP_201_CREATED)

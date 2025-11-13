@@ -16,9 +16,12 @@ class EventDetails:
         self.meta = {'transaction_id': self.transaction_id, 'timestamp': self.timestamp}
     
     def execute(self, _id: str):
+        self.log.info('start logic event_details')
+
         event_db = self.db_service.get_event_by_id(_id)
 
         if not event_db:
+            self.log.info('resource not found in database', extra={'details': {'event_id': _id}})
             raise ResourceNotFoundError(resource=_id, meta=self.meta)
         
         data = {
@@ -29,5 +32,7 @@ class EventDetails:
             'total_tickets_sold': event_db[4],
             'total_tickets_exchange': event_db[5]
         }
+
+        self.log.info('event details with success')
 
         return Response(data=data, meta=self.meta, status_code=status.HTTP_200_OK)

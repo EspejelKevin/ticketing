@@ -13,10 +13,11 @@ from log import Formatter, Log
 
 class RepositoriesContainer(containers.DeclarativeContainer):
     settings = providers.Dependency(Settings)
+    log = providers.Dependency(Log)
     mysql = providers.Singleton(MySQL, 
                                     host=settings.provided.MYSQL_HOST, user=settings.provided.MYSQL_USER,
                                     password=settings.provided.MYSQL_PASSWORD, db=settings.provided.MYSQL_DATABASE)
-    mysql_repository = providers.Singleton(MySQLRepository, database=mysql.provider)
+    mysql_repository = providers.Singleton(MySQLRepository, database=mysql.provider, log=log)
 
 
 class ServicesContainer(containers.DeclarativeContainer):
@@ -41,7 +42,7 @@ class AppContainer(containers.DeclarativeContainer):
     log = log = providers.Factory(Log, formatter=formatter)
     settings = providers.ThreadSafeSingleton(Settings)
     repositories = providers.Container(
-        RepositoriesContainer, settings=settings)
+        RepositoriesContainer, settings=settings, log=log)
     services = providers.Container(
         ServicesContainer, repositories=repositories)
     use_cases = providers.Container(
