@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 
 from domain import (DBRepository, ResourceNotFoundError, ResourceConflictError,
-                    Response, InternalServerError, TicketUpdateInput)
+                    Response, InternalServerError)
 from log import Log
 
 
@@ -16,11 +16,10 @@ class ExchangeTicket:
         self.timestamp = datetime.now()
         self.meta = {'transaction_id': self.transaction_id, 'timestamp': self.timestamp}
     
-    def execute(self, code: str, ticket: TicketUpdateInput):
+    def execute(self, code: str):
         self.log.info('start logic exchange_ticket')
 
         ticket_db = self.db_service.get_ticket_by_code(code)
-        exchange_value = ticket.exchange
 
         if not ticket_db:
             self.log.info('resource not found in database', extra={'details': {'ticket_code': code}})
@@ -53,7 +52,7 @@ class ExchangeTicket:
             raise ResourceConflictError(message=message, meta=self.meta)
 
         ticket = {
-            'exchange': exchange_value,
+            'exchange': True,
             'exchange_date': current_date
         }
 

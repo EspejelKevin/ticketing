@@ -4,7 +4,7 @@ from fastapi.encoders import jsonable_encoder
 
 import uuid
 
-from domain import get_settings, EventInput, EventUpdateInput, TicketInput, TicketUpdateInput
+from domain import get_settings, EventInput, EventUpdateInput, TicketInput
 import container
 
 
@@ -81,10 +81,10 @@ def seller_ticket(ticket: TicketInput) -> dict:
 
 @rest_router.patch('/tickets/{code}', tags=['Tickets'],
             summary=descriptions['exchange_ticket'])
-def exchange_ticket(code: int, ticket: TicketUpdateInput) -> dict:
+def exchange_ticket(code: int) -> dict:
     with container.SingletonContainer.scope() as app:
         use_case = app.use_cases.exchange_ticket()
-        response = use_case.execute(str(code), ticket)
+        response = use_case.execute(str(code))
         return JSONResponse(jsonable_encoder(response, exclude={'status_code'}),
                             status_code=response.status_code)
 

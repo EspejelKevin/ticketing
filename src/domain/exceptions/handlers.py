@@ -1,8 +1,7 @@
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-from .errors import (ResourceNotFoundError,
-                     ResourceAlreadyExistsError, 
+from .errors import (ResourceNotFoundError, ResourceAlreadyExistsError, DomainException,
                      InternalServerError, BadRequestError, ResourceConflictError)
 
 
@@ -26,11 +25,6 @@ def internal_server_handler(_, ex: InternalServerError) -> JSONResponse:
     return core_handler(ex)
 
 
-def core_handler(ex: Exception) -> JSONResponse:
-    content = {'data': {'message': ex.message, 'code': ex.code}}
-    if ex.kwargs.get('details', None):
-        content['data']['details'] = ex.kwargs.get('details')
-        del ex.kwargs['details']
-    if ex.kwargs:
-        content.update(ex.kwargs)
+def core_handler(ex: DomainException) -> JSONResponse:
+    content = {'data': ex.data, 'meta': ex.meta}
     return JSONResponse(content=jsonable_encoder(content), status_code=ex.status_code)
