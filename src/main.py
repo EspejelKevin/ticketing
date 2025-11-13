@@ -17,7 +17,11 @@ tags = [
     },
     {
         'name': 'Events',
-        'description': 'Endpoints to manage events'
+        'description': 'Endpoints to manage events.'
+    },
+    {
+        'name': 'Tickets',
+        'description': 'Endpoints to manage tickets.'
     }
 ]
 

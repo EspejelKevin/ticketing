@@ -3,6 +3,7 @@ import strawberry
 
 from typing import Self
 from datetime import datetime
+import uuid
 
 
 class EventInput(BaseModel):
@@ -36,6 +37,14 @@ class EventUpdateInput(BaseModel):
             raise ValueError('end_date must be greater than start_date')
         return self
     
+
+class TicketInput(BaseModel):
+    event_id: uuid.UUID
+
+
+class TicketUpdateInput(BaseModel):
+    exchange: bool
+
 
 @strawberry.experimental.pydantic.input(model=EventInput, all_fields=True)
 class EventInputType:

@@ -13,7 +13,7 @@ class DBRepository(metaclass=ABCMeta):
         raise NotImplementedError
     
     @abstractmethod
-    def get_ticket_by_id(self, id: str):
+    def get_ticket_by_code(self, code: str):
         raise NotImplementedError
     
     @abstractmethod
@@ -28,14 +28,18 @@ class DBRepository(metaclass=ABCMeta):
     def delete_event_by_id(self, id: str):
         raise NotImplementedError
     
-    # @abstractmethod
-    # def sell_ticket(self, event_id: str):
-    #     raise NotImplementedError
-    
-    # @abstractmethod
-    # def exchange_ticket(self, id: str):
-    #     raise NotImplementedError
+    @abstractmethod
+    def create_ticket(self, ticket: dict):
+        raise NotImplementedError
 
-    # @abstractmethod
-    # def update_ticket(self, id: str, ticket: dict):
-    #     raise NotImplementedError
+    @abstractmethod
+    def update_ticket(self, code: str, ticket: dict):
+        raise NotImplementedError
+    
+    @abstractmethod
+    def update_event_tickets_sold(self, id: str, quantity: int):
+        raise NotImplementedError
+    
+    @abstractmethod
+    def update_event_tickets_exchanged(self, id: str, quantity: int):
+        raise NotImplementedError

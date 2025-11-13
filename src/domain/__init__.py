@@ -1,6 +1,6 @@
 from .settings import Settings, get_settings
 from .schemas.request import (EventInput, EventUpdateInput, EventInputType, 
-                            EventUpdateInputType)
+                            EventUpdateInputType, TicketInput, TicketUpdateInput)
 from .schemas.response import EventDetails, EventDetailsType, Response
 from .interfaces.db_repository import DBRepository
 from .exceptions.errors import (ResourceNotFoundError,

@@ -11,8 +11,8 @@ class DBService(DBRepository):
     def get_event_by_name(self, name: str):
         return self.db_repository.get_event_by_name(name)
         
-    def get_ticket_by_id(self, id: str):
-        return self.db_repository.get_ticket_by_id(id)
+    def get_ticket_by_code(self, code: str):
+        return self.db_repository.get_ticket_by_code(code)
     
     def create_event(self, id: str, event):
         return self.db_repository.create_event(id, event)
@@ -22,3 +22,15 @@ class DBService(DBRepository):
     
     def delete_event_by_id(self, id: str):
         return self.db_repository.delete_event_by_id(id)
+    
+    def create_ticket(self, ticket: dict):
+        return self.db_repository.create_ticket(ticket)
+
+    def update_ticket(self, code: str, ticket: dict):
+        return self.db_repository.update_ticket(code, ticket)
+
+    def update_event_tickets_sold(self, id: str, quantity: int):
+        return self.db_repository.update_event_tickets_sold(id, quantity)
+    
+    def update_event_tickets_exchanged(self, id: str, quantity: int):
+        return self.db_repository.update_event_tickets_exchanged(id, quantity)
