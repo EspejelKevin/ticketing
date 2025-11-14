@@ -6,9 +6,12 @@ from domain import (ResourceNotFoundError, resource_not_found_handler,
                     ResourceAlreadyExistsError, resource_already_exists_handler,
                     InternalServerError, internal_server_handler,
                     BadRequestError, bad_request_handler,
-                    ResourceConflictError, resource_conflict_handler)
+                    ResourceConflictError, resource_conflict_handler, get_settings)
 import container
 
+
+settings = get_settings()
+prefix = f'/{settings.NAMESPACE}/api/{settings.API_VERSION}/{settings.RESOURCE}/rest'
 
 tags = [
     {
@@ -31,6 +34,7 @@ def on_start_up() -> None:
 app = FastAPI(
     title='Ticketing System',
     openapi_tags=tags,
+    docs_url=prefix,
     on_startup=[on_start_up]
 )
 app.add_exception_handler(BadRequestError, bad_request_handler)
@@ -43,5 +47,5 @@ app.include_router(graphql_router, include_in_schema=False)
 
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', host='0.0.0.0',
-                port=8000, reload=False)
+    uvicorn.run('main:app', host=settings.HOST,
+                port=settings.PORT, reload=settings.RELOAD)
