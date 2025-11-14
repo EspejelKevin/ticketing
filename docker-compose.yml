@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  ticketing-db:
+    container_name: ticketing-db
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=ticketing
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - mysql-ticketing-data:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - ticketing-network
+
+  ticketing-service:
+    container_name: ticketing-service
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ticketing-db
+    networks:
+      - ticketing-network
+
+volumes:
+  mysql-ticketing-data:
+
+networks:
+  ticketing-network:
+    driver: bridge

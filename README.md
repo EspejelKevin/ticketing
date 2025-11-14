@@ -44,7 +44,7 @@ Para cargarlas en tu entorno local **(Mac)**:
 source env.sh
 ```
 
-## ⚙️ Variables de entorno del contenedor
+## ⚙️ Variables de entorno del contenedor levantado con docker-compose
 
 Las variables de entorno que se utilizarán para el contenedor deben estar en un archivo `.env`.  
 Ejemplo de contenido:
@@ -54,14 +54,14 @@ NAMESPACE=ticket-management
 RESOURCE=tracking
 MYSQL_USER=root
 MYSQL_PASSWORD=password
-MYSQL_HOST=localhost
+MYSQL_HOST=ticketing-db
 MYSQL_DATABASE=ticketing
 STRAWBERRY_DISABLE_RICH_ERRORS=1
 ```
 
 ---
 
-## 🐳 Ejecución con Docker y Podman
+## 🐳 Ejecución con Docker y/o Podman
 
 ### 1️⃣ Construir la imagen
 
@@ -73,13 +73,17 @@ podman build -t ticketing-image:1.0.0 .
 ### 2️⃣ Ejecutar el contenedor
 
 ```bash
-docker run -d -p 8000:8000 --name ticketing-container --env-file ./.env ticketing-image
-podman run -d -p 8000:8000 --name ticketing-container --env-file ./.env ticketing-image
+docker run -d -p 8000:8000 --name ticketing-container --env-file ./.env ticketing-image:1.0.0
+podman run -d -p 8000:8000 --name ticketing-container --env-file ./.env ticketing-image:1.0.0
 ```
 
 > ⚠️ Nota: asegúrate de que el archivo `.env` esté en el mismo directorio donde ejecutas el comando `docker run`.
 
-> ⚠️ Nota: asegúrate de tener MySQL en tu entorno local y con el schema SQL definido (se puede evitar este paso usando docker-compose).
+> ⚠️ Nota: asegúrate de tener MySQL en el mismo entorno donde se ejecuto el **ticketing-container**, sino habrá problemas de comunicación, y el schema SQL debe estar cargado dentro de MySQL container o MySQL localhost (se puede evitar este paso usando docker-compose).
+
+> ⚠️ Nota: si ejecutas MySQL en un contenedor separado, asegurate de que la variable de entorno **MYSQL_HOST** tenga el valor de la IP del contenedor MySQL.
+
+> **⚠️ Nota: se recomienda utilizar docker-compose**
 
 
 ### 3️⃣ Ejecución del docker-compose [All In One]
