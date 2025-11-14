@@ -168,13 +168,13 @@ ticketing/
 ### Docs Endpoints REST URL 
 
 ```bash
-http://0.0.0.0:8000/ticket-management/api/v1/tracking/rest
+http://localhost:8000/ticket-management/api/v1/tracking/rest
 ```
 
 ### Docs Schema GraphQL URL 
 
 ```bash
-http://0.0.0.0:8000/ticket-management/api/v1/tracking/graphql
+http://localhost:8000/ticket-management/api/v1/tracking/graphql
 ```
 
 ---
