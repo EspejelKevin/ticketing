@@ -8,7 +8,7 @@ Servicio desarrollado con **FastAPI** para gestionar eventos y tickets.
 
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [Uvicorn](https://www.uvicorn.org/)
-- [Python 3.11+](https://www.python.org/)
+- [Python 3.13+](https://www.python.org/)
 - [Docker](https://www.docker.com/)
 - [Docker-Compose](https://docs.docker.com/compose/)
 - [strawberry-graphql[fastapi]](https://strawberry.rocks/)
@@ -100,11 +100,11 @@ podman compose down -v [Kill procesos]
 
 ## ▶️ Ejecución local **(Mac)**
 
-Crea un entorno virtual y activa las variables:
+Crea un entorno virtual y activa las variables. Asegurate de tener python 3.13+:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
+python3.13.+ -m venv .venv
+source .venv/bin/activate **usa .venv/bin/activate con powershell**
 source env.sh
 pip install -r requirements.txt
 ```
@@ -200,6 +200,7 @@ Ejemplo de salida:
 ## 🧪 Tests
 
 Para ejecutar las pruebas unitarias asegurate de estar en la raiz del proyecto y ejecutar el siguiente comando:
+> **⚠️ Nota: debe tener activado el entorno virtual de python y tener las dependencias instaladas**
 
 ```bash
 pytest tests
