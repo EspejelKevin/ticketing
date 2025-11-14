@@ -33,7 +33,7 @@ class DeleteEvent:
         end_date = event_db[2]
         total_tickets_sold = event_db[4]
 
-        if (current_date > end_date) or total_tickets_sold == 0:
+        if (current_date.date() > end_date.date()) or total_tickets_sold == 0:
             if not self.db_service.delete_event_by_id(_id):
                 message = f'error while deleting event {_id}'
                 raise InternalServerError(message=message, meta=self.meta)
