@@ -17,6 +17,12 @@ Servicio desarrollado con **FastAPI** para gestionar eventos y tickets.
 
 ---
 
+## 💾 Esquema SQL
+
+Se adjunta un archivo **schema.sql** que permite visualizar la estructura SQL de MySQL
+
+---
+
 ## ⚙️ Variables de entorno
 
 Las variables de entorno se cargan mediante el archivo `env.sh` **(Mac)**.  
@@ -72,6 +78,7 @@ podman run -d -p 8000:8000 --name ticketing-container --env-file ./.env ticketin
 ```
 
 > ⚠️ Nota: asegúrate de que el archivo `.env` esté en el mismo directorio donde ejecutas el comando `docker run`.
+
 > ⚠️ Nota: asegúrate de tener MySQL en tu entorno local y con el schema SQL definido (se puede evitar este paso usando docker-compose).
 
 
@@ -132,6 +139,7 @@ ticketing/
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
+├── schema.sql
 └── README.md
 ```
 
@@ -169,7 +177,7 @@ http://0.0.0.0:8000/ticket-management/api/v1/tracking/graphql
 
 ## 🧾 Logging
 
-El proyecto usa un logger JSON personalizado que incluye detalles del evento.  
+El proyecto usa un logger JSON personalizado que incluye detalles de un proceso en ejecución.  
 Ejemplo de salida:
 
 ```json
