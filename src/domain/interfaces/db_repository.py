@@ -21,6 +21,10 @@ class DBRepository(metaclass=ABCMeta):
         raise NotImplementedError
     
     @abstractmethod
+    def create_event_historic(self, id: str, event: tuple, current_date):
+        raise NotADirectoryError
+    
+    @abstractmethod
     def update_event(self, id: str, event: EventUpdateInput):
         raise NotImplementedError
     

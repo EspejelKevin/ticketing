@@ -17,6 +17,9 @@ class DBService(DBRepository):
     def create_event(self, id: str, event):
         return self.db_repository.create_event(id, event)
     
+    def create_event_historic(self, id: str, event: tuple, current_date):
+        return self.db_repository.create_event_historic(id, event, current_date)
+    
     def update_event(self, id: str, event):
         return self.db_repository.update_event(id, event)
     

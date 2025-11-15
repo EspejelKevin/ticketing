@@ -47,6 +47,21 @@ class MySQLRepository(DBRepository):
         except Exception:
             self.log.error('error on create_event', exc_info=True)
             return False
+        
+    def create_event_historic(self, id: str, event: tuple, current_date):
+        try:
+            with self.database() as mysql:
+                session = mysql.get_session()
+                cursor = session.cursor()
+                query = 'INSERT INTO events_historic(id, name, start_date, end_date, total_tickets, total_tickets_sold, total_tickets_exchange, update_date)' \
+                'VALUES(%s, %s, %s, %s, %s, %s, %s, %s)'
+                data = (id, event[0], event[1], event[2], event[3], event[4], event[5], current_date)
+                cursor.execute(query, data)
+                self.log.info('consuming create_event_historic', extra={'details': {'query_sql': query, 'data': data}})
+                return cursor.rowcount > 0
+        except Exception:
+            self.log.error('error on create_event_historic', exc_info=True)
+            return False
     
     def update_event(self, id: str, event):
         try:

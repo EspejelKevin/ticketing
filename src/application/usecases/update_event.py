@@ -25,7 +25,6 @@ class UpdateEvent:
             self.log.info('resource not found in database', extra={'details': {'event_id': _id}})
             raise ResourceNotFoundError(resource=_id, meta=self.meta)
         
-        event_db = list(event_db)
         start_date_from_db = event_db[1]
         new_end_date = event.end_date
 
@@ -47,7 +46,7 @@ class UpdateEvent:
                 details = f'max quantity allowed to decrease is: {total_tickets_from_db - total_tickets_sold_from_db}'
                 raise BadRequestError(message=message, meta=self.meta, details=details)
             
-            event_db[3] = new_total_tickets
+            total_tickets_from_db = new_total_tickets
         
         current_date = datetime.now()
         end_date_from_db = event_db[2]
@@ -60,11 +59,13 @@ class UpdateEvent:
         event.name = event_db[0] if not event.name else event.name
         event.start_date = event_db[1] if not event.start_date else event.start_date
         event.end_date = event_db[2] if not event.end_date else event.end_date
-        event.total_tickets = event_db[3]
+        event.total_tickets = total_tickets_from_db
 
         if self.db_service.update_event(_id, event) is None:
             message = f'error while updating event {_id}'
             raise InternalServerError(message=message, meta=self.meta)
+        
+        self.db_service.create_event_historic(_id, event_db, current_date)
 
         data = {
             'name': event.name,
